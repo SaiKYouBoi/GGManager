@@ -21,7 +21,13 @@ class TournamentController extends Controller
 
     public function store(StoreTournamentRequest $request): JsonResponse
     {
-        return response()->json([]);
+        $this->authorize('create', Tournament::class);
+
+        $tournament = Tournament::create(
+            $request->validated() + ['organizer_id' => auth()->id(), 'status' => 'open']
+        );
+
+        return response()->json($tournament, 201);
     }
 
     public function show(Tournament $tournament): JsonResponse
@@ -33,11 +39,19 @@ class TournamentController extends Controller
 
     public function update(UpdateTournamentRequest $request, Tournament $tournament): JsonResponse
     {
-        return response()->json([]);
+        $this->authorize('update', $tournament);
+
+        $tournament->update($request->validated());
+
+        return response()->json($tournament);
     }
 
     public function destroy(Tournament $tournament): JsonResponse
     {
-        return response()->json([]);
+        $this->authorize('delete', $tournament);
+
+        $tournament->delete();
+
+        return response()->json(null, 204);
     }
 }
