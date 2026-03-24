@@ -11,7 +11,12 @@ class TournamentController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json([]);
+        $tournaments = Tournament::query()
+            ->when(request('game'), fn($q, $game) => $q->where('game', $game))
+            ->when(request('status'), fn($q, $status) => $q->where('status', $status))
+            ->get();
+
+        return response()->json($tournaments);
     }
 
     public function store(StoreTournamentRequest $request): JsonResponse
@@ -21,7 +26,9 @@ class TournamentController extends Controller
 
     public function show(Tournament $tournament): JsonResponse
     {
-        return response()->json([]);
+        return response()->json(
+            $tournament->load('organizer', 'matches')
+        );
     }
 
     public function update(UpdateTournamentRequest $request, Tournament $tournament): JsonResponse
