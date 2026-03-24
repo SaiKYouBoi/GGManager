@@ -14,9 +14,11 @@ class StoreTournamentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'game' => ['required', 'string', 'max:100'],
-            'date' => ['required', 'date', 'after:today'],
+            'name'             => ['required', 'string', 'max:255'],
+            'game'             => ['required', 'string', 'max:100'],
+            'date'             => ['required', 'date', 'after:today'],
+            'max_participants' => ['required', 'integer', 'in:4,8,16,32'],
+            'format'           => ['required', 'in:single_elimination'],
         ];
     }
 }
