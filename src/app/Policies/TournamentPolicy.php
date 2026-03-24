@@ -29,7 +29,7 @@ class TournamentPolicy
 
     public function delete(User $user, Tournament $tournament): bool
     {
-        return false;
+        return $user->id === $tournament->organizer_id && $tournament->status === 'open';
     }
 
     public function restore(User $user, Tournament $tournament): bool
