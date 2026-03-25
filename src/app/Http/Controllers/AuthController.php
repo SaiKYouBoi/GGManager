@@ -39,13 +39,11 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-    
         $user = User::where('email', $fields['email'])->first();
 
-    
-        if (!$user || !Hash::make($fields['password'], $user->password)) {
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
-                'message' => 'Credentials ghalṭin'
+                'message' => 'Credentials ghalṭin (Email wala Password ghalet)'
             ], 401);
         }
 
@@ -56,7 +54,6 @@ class AuthController extends Controller
             'token' => $token
         ], 200);
     }
-
     public function logout(Request $request)
     {
         

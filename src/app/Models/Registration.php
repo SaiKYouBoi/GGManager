@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Registration extends Model
 {
+    public $timestamps = false;
     protected $fillable = [
         'tournament_id',
         'user_id',
