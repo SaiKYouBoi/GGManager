@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -15,4 +16,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+});
+
+Route::apiResource('tournaments', TournamentController::class)
+    ->only(['index', 'show']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('tournaments', TournamentController::class)
+        ->only(['store', 'update', 'destroy']);
 });
