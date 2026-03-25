@@ -23,7 +23,7 @@ class AuthController extends Controller
             'password' => Hash::make($fields['password'])
         ]);
 
-        
+
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         return response([
@@ -39,11 +39,10 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-    
         $user = User::where('email', $fields['email'])->first();
 
-    
-        if (!$user || !Hash::make($fields['password'], $user->password)) {
+
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Credentials ghalṭin'
             ], 401);
@@ -59,7 +58,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        
+
         $request->user()->currentAccessToken()->delete();
 
         return response(['message' => 'Logged out safely']);

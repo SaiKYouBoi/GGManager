@@ -11,8 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
-    
+    use HasFactory,HasApiTokens, Notifiable;
 
     protected $fillable = [
         'name',
@@ -56,7 +55,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => 'string', 
+            'role' => 'string',
         ];
     }
 
