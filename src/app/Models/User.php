@@ -8,10 +8,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory,HasApiTokens, Notifiable;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $fillable = [
         'name',
@@ -20,27 +20,32 @@ class User extends Authenticatable
         'role',
     ];
 
-    public function tournaments()
+    // Tournaments li "Ahmed" (organizer) creya
+    public function tournaments(): HasMany
     {
         return $this->hasMany(Tournament::class, 'organizer_id');
     }
 
-    public function registrations()
+    // Registrations (Inscriptions) dyal l-player f les tournois
+    public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class);
     }
 
-    public function matchesAsPlayer1()
+    // Matches fin l-user kān player 1
+    public function matchesAsPlayer1(): HasMany
     {
-        return $this->hasMany(GameMatch::class, 'player1_id');
+        return $this->hasMany(GameMatch::class, 'player1_id'); // <--- T-akked men Match::class
     }
 
-    public function matchesAsPlayer2()
+    // Matches fin l-user kān player 2
+    public function matchesAsPlayer2(): HasMany
     {
         return $this->hasMany(GameMatch::class, 'player2_id');
     }
 
-    public function matchesWon()
+    // L-matches li rbe7 had l-user
+    public function matchesWon(): HasMany
     {
         return $this->hasMany(GameMatch::class, 'winner_id');
     }
@@ -58,5 +63,4 @@ class User extends Authenticatable
             'role' => 'string',
         ];
     }
-
 }
