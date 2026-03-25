@@ -16,13 +16,28 @@ class Tournament extends Model
         'organizer_id',
     ];
 
+
     public function organizer()
     {
         return $this->belongsTo(User::class, 'organizer_id');
     }
 
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
+    }
+
+
     public function matches()
     {
-        return $this->hasMany(Match::class);
+        return $this->hasMany(GameMatch::class);
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'registrations')
+                    ->withPivot('status', 'registered_at')
+                    ->withTimestamps();
     }
 }
