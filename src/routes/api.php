@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TournamentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -20,3 +21,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::get('/test', function () {
     return "API working";
 });
+
+Route::apiResource('tournaments', TournamentController::class)
+    ->only(['index', 'show']);
