@@ -23,7 +23,7 @@ class AuthController extends Controller
             'password' => Hash::make($fields['password'])
         ]);
 
-        
+
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         return response([
@@ -56,7 +56,7 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
-        
+
         $request->user()->currentAccessToken()->delete();
 
         return response(['message' => 'Logged out safely']);
