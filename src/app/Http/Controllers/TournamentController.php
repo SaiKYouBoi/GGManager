@@ -6,6 +6,7 @@ use App\Models\Tournament;
 use App\Http\Requests\StoreTournamentRequest;
 use App\Http\Requests\UpdateTournamentRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class TournamentController extends Controller
 {
@@ -24,8 +25,9 @@ class TournamentController extends Controller
         $this->authorize('create', Tournament::class);
 
         $tournament = Tournament::create(
-            $request->validated() + ['organizer_id' => auth()->id(), 'status' => 'open']
+            $request->validated() + ['organizer_id' => Auth::user()->id, 'status' => 'open']
         );
+
 
         return response()->json($tournament, 201);
     }

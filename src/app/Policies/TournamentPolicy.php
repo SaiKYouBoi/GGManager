@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Tournament;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class TournamentPolicy
 {
@@ -40,5 +41,11 @@ class TournamentPolicy
     public function forceDelete(User $user, Tournament $tournament): bool
     {
         return false;
+    }
+
+    public function manage(User $user, Tournament $tournament): bool
+    {
+        return $user->role === 'organizer'
+            && $user->id === $tournament->organizer_id;
     }
 }
