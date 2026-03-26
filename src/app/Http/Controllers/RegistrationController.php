@@ -43,11 +43,11 @@ class RegistrationController extends Controller
 
         $players = $tournament->registrations()
             ->where('status', 'confirmed')
-            ->with('player:id,name,email')
+            ->with('user:id,name,email')
             ->get()
             ->map(fn($reg) => [
                 'id' => $reg->id,
-                'player' => $reg->player,
+                'player' => $reg->user,
                 'registered_at' => $reg->registered_at,
                 'status' => $reg->status,
             ]);
