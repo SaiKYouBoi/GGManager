@@ -27,6 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only(['store', 'update', 'destroy']);
 });
 
-Route::post('/tournaments/{tournament}/register', [RegistrationController::class, 'store']);
-Route::get('/tournaments/{tournament}/registrations', [RegistrationController::class, 'index']);
-Route::patch('/tournaments/{tournament}/close', [RegistrationController::class, 'close']);
+Route::post('/tournaments/{tournament}/register', [RegistrationController::class, 'store'])->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/tournaments/{tournament}/registrations', [RegistrationController::class, 'index']);
+    Route::patch('/tournaments/{tournament}/close', [RegistrationController::class, 'close']);
+});
