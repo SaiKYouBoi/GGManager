@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MatchController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -24,4 +25,6 @@ Route::apiResource('tournaments', TournamentController::class)
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tournaments', TournamentController::class)
         ->only(['store', 'update', 'destroy']);
+
+    Route::patch('/matches/{match}/score', [MatchController::class, 'updateScore']);
 });
