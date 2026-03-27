@@ -36,3 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tournaments/{tournament}/registrations', [RegistrationController::class, 'index']);
     Route::patch('/tournaments/{tournament}/close', [RegistrationController::class, 'close']);
 });
+
+
+Route::get('/tournaments/{tournament}/bracket', [TournamentController::class, 'bracket']);
+Route::get('/tournaments/{tournament}', [TournamentController::class, 'show']);
+    

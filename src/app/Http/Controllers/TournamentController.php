@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Tournament;
 use App\Http\Requests\StoreTournamentRequest;
 use App\Http\Requests\UpdateTournamentRequest;
+use App\Services\BracketService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class TournamentController extends Controller
 {
+    public function __construct(private BracketService $bracketService)
+    {
+
+    }
+
     public function index(): JsonResponse
     {
         $tournaments = Tournament::query()
@@ -56,4 +62,26 @@ class TournamentController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function bracket(Tournament $tournament): JsonResponse
+    {
+        if ($tournament->status === 'open') {
+            return response()->json([
+                'message' => 'Bracket not generated yet. Registrations are still open.'
+            ], 422);
+        }
+
+        $bracket = $this->bracketService->getBracketTree($tournament);
+
+        return response()->json([
+            'tournament' => [
+                'id' => $tournament->id,
+                'name' => $tournament->name,
+                'game' => $tournament->game,
+                'status' => $tournament->status,
+            ],
+            'rounds' => $bracket,
+        ]);
+    }
+
 }
