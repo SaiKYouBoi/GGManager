@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/tournaments/{tournament}/register",
+     *     tags={"Registrations"},
+     *     summary="Register current player to a tournament",
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="tournament", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=201, description="Registered successfully"),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
+     */
     public function store(Request $request, Tournament $tournament): JsonResponse
     {
         if ($tournament->status !== 'open') {
@@ -37,6 +48,17 @@ class RegistrationController extends Controller
         return response()->json(['message' => 'Registered successfully.'], 201);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/tournaments/{tournament}/registrations",
+     *     tags={"Registrations"},
+     *     summary="List confirmed registrations (organizer only)",
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="tournament", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="List of registered players"),
+     *     @OA\Response(response=403, description="Forbidden")
+     * )
+     */
     public function index(Tournament $tournament): JsonResponse
     {
         $this->authorize('manage', $tournament);
@@ -55,6 +77,18 @@ class RegistrationController extends Controller
         return response()->json($players);
     }
 
+    /**
+     * @OA\Patch(
+     *     path="/tournaments/{tournament}/close",
+     *     tags={"Registrations"},
+     *     summary="Close registrations and generate bracket (organizer only)",
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="tournament", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Registrations closed"),
+     *     @OA\Response(response=422, description="Validation error"),
+     *     @OA\Response(response=403, description="Forbidden")
+     * )
+     */
     public function close(Tournament $tournament): JsonResponse
     {
         $this->authorize('manage', $tournament);

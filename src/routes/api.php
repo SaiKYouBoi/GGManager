@@ -6,7 +6,6 @@ use App\Http\Controllers\MatchController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-// Routes Publiques
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 

@@ -15,6 +15,27 @@ class MatchController extends Controller
 
     }
 
+    /**
+     * @OA\Patch(
+     *     path="/matches/{match}/score",
+     *     tags={"Matches"},
+     *     summary="Update match score and advance winner (organizer only)",
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="match", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"score_player1","score_player2","winner_id"},
+     *             @OA\Property(property="score_player1", type="integer"),
+     *             @OA\Property(property="score_player2", type="integer"),
+     *             @OA\Property(property="winner_id", type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Score updated"),
+     *     @OA\Response(response=422, description="Validation error"),
+     *     @OA\Response(response=403, description="Forbidden")
+     * )
+     */
     public function updateScore(Request $request, GameMatch $match): JsonResponse
     {
         $this->authorize('updateScore', $match);
